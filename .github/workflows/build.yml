@@ -13,10 +13,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install Qt6 dependencies
-      run: |
-        sudo apt-get update -qq
-        sudo apt-get install -y build-essential libgl1-mesa-dev
+    # - name: Install Qt6 dependencies
+    #   run: |
+    #     sudo apt-get update -qq
+    #     sudo apt-get install -y build-essential libgl1-mesa-dev
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
@@ -44,6 +44,12 @@ jobs:
         cd build
         cmake ..
         make
+    
+    - name: show build dir
+      run: |
+        ls -alh
+        cd bin
+        ls -alh
 
     - name: Create release
       id: create_release
