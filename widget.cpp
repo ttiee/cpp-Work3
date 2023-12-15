@@ -2,6 +2,9 @@
 #include "./ui_widget.h"
 #include <QKeyEvent>
 #include <QRandomGenerator>
+#include <QTimer>
+#include <QLabel>
+
 
 int score = 0;
 int error_n = 0;
