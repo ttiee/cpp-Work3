@@ -52,6 +52,10 @@ target_link_libraries(BigWork3 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 if(${QT_VERSION} VERSION_LESS 6.1.0)
   set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.BigWork3)
 endif()
+
+# Set the output directory to "bin" within the build directory
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 set_target_properties(BigWork3 PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
