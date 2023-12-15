@@ -47,7 +47,7 @@ void Widget::on_pushButton_start_clicked()
 void Widget::on_pushButton_clicked()
 {
     // Clear previous letters and reset counts
-    currentLetter.toUpper();
+    ui->label->clear();
     score = 0;
     error_n = 0;
 
