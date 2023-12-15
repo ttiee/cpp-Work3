@@ -18,15 +18,23 @@ jobs:
         sudo apt-get update -qq
         sudo apt-get install -y build-essential libgl1-mesa-dev
 
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: 6.6.1
+        cached: 'false'
+    - name: ubuntu install GL library
+      run: sudo apt-get install -y libglew-dev libglfw3-dev
+
     # - name: Download and install Qt6
     #   run: |
     #     wget https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
     #     chmod +x qt-unified-linux-x64-online.run
     #     ./qt-unified-linux-x64-online.run --platform minimal --verbose --script qt-installer-noninteractive.qs
 
-    - name: Set up environment variables
-      run: |
-        echo 'export PATH=$HOME/Qt/6.0.1/gcc_64/bin:$PATH' >> $GITHUB_ENV
+    # - name: Set up environment variables
+    #   run: |
+    #     echo 'export PATH=$HOME/Qt/6.0.1/gcc_64/bin:$PATH' >> $GITHUB_ENV
 
     - name: Create build directory
       run: mkdir build
