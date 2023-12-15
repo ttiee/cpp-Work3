@@ -48,8 +48,8 @@ jobs:
     - name: show build dir
       run: |
         ls -alh
-        cd bin
-        ls -alh
+        ls -alh build
+        ls -alh build/bin
 
     - name: Create release
       id: create_release
