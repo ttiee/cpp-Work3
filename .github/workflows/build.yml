@@ -49,7 +49,7 @@ jobs:
       run: |
         ls -alh
         ls -alh build
-        ls -alh build/bin
+        ls -alh build/BigWork3
 
     - name: Create release
       id: create_release
