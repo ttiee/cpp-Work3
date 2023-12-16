@@ -36,19 +36,19 @@ jobs:
         #     msvc_arch: x64
         #     qt_arch_install: msvc2017_64
         #   # 5.15.2 参考 https://mirrors.cloud.tencent.com/qt/online/qtsdkrepository/windows_x86/desktop/qt5_5152/
-        #   - qt_ver: 5.15.2
-        #     qt_arch: win32_msvc2019
-        #     msvc_arch: x86
-        #     qt_arch_install: msvc2019
-        #   - qt_ver: 5.15.2          
-        #     qt_arch: win64_msvc2019_64
-        #     msvc_arch: x64
-        #     qt_arch_install: msvc2019_64          
+          - qt_ver: 5.15.2
+            qt_arch: win32_msvc2019
+            msvc_arch: x86
+            qt_arch_install: msvc2019
+          - qt_ver: 5.15.2          
+            qt_arch: win64_msvc2019_64
+            msvc_arch: x64
+            qt_arch_install: msvc2019_64          
           # 6.0.0 参考 https://mirrors.cloud.tencent.com/qt/online/qtsdkrepository/windows_x86/desktop/qt6_600/
-        #   - qt_ver: 6.0.0
-        #     qt_arch: win64_msvc2019_64
-        #     msvc_arch: x64
-        #     qt_arch_install: msvc2019_64
+          - qt_ver: 6.0.0
+            qt_arch: win64_msvc2019_64
+            msvc_arch: x64
+            qt_arch_install: msvc2019_64
           # 6.2.2
           - qt_ver: 6.2.2
             qt_arch: win64_msvc2019_64
@@ -86,6 +86,7 @@ jobs:
           # echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
           # echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
           # echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
+          tree
           call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files\mingw64\bin\gcc.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files\mingw64\bin\g++.exe" -SD:/WorkSpace/QT/BigWork3 -Bd:/WorkSpace/QT/BigWork3/build -G "MinGW Makefiles"
           cmake --build d:/WorkSpace/QT/BigWork3/build --config release --target all
 
