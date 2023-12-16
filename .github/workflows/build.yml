@@ -16,11 +16,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Install Qt6 dependencies
-    #   run: |
-    #     sudo apt-get update -qq
-    #     sudo apt-get install -y build-essential libgl1-mesa-dev
-
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
@@ -28,16 +23,6 @@ jobs:
         cached: 'false'
     - name: ubuntu install GL library
       run: sudo apt-get install -y libglew-dev libglfw3-dev
-
-    # - name: Download and install Qt6
-    #   run: |
-    #     wget https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
-    #     chmod +x qt-unified-linux-x64-online.run
-    #     ./qt-unified-linux-x64-online.run --platform minimal --verbose --script qt-installer-noninteractive.qs
-
-    # - name: Set up environment variables
-    #   run: |
-    #     echo 'export PATH=$HOME/Qt/6.0.1/gcc_64/bin:$PATH' >> $GITHUB_ENV
 
     - name: Create build directory
       run: mkdir build
@@ -60,27 +45,6 @@ jobs:
       run: |
         zip -r build-Ubuntu.zip build
 
-    # - name: Create release
-    #   id: create_release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: v${{ github.ref }}
-    #     release_name: Release ${{ github.ref }}
-    #     draft: false
-    #     prerelease: false
-
-    # - name: Upload release artifact
-    #   id: upload-release-asset
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-    #     asset_path: ./build/bin/BigWork3  # 替换为你的实际路径和可执行文件名
-    #     asset_name: BigWork3
-    #     asset_content_type: application/octet-stream
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
