@@ -86,7 +86,10 @@ jobs:
           # echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
           # echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
           # echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
-          dir C:\Program Files (x86)\Microsoft Visual Studio\2019\ /s
+          # dir C:\Program Files (x86)\Microsoft Visual Studio\2019\ /s
+          cmake --version
+          
+          echo ##########################################
           dir /s
           # call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files\mingw64\bin\gcc.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files\mingw64\bin\g++.exe" -SD:/WorkSpace/QT/BigWork3 -Bd:/WorkSpace/QT/BigWork3/build -G "MinGW Makefiles"
           # call "C:\Program Files\mingw64\bin\mingw32-make.exe" -C d:/WorkSpace/QT/BigWork3/build -f Makefile
