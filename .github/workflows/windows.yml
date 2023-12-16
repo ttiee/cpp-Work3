@@ -1,4 +1,4 @@
-name: Windows
+name: Windows build and release
 
 permissions:
     contents: write

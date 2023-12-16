@@ -1,4 +1,4 @@
-name: Build and Release
+name: Ubuntu Build and Release
 
 permissions:
   contents: write
