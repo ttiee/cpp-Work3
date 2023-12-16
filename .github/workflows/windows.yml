@@ -110,7 +110,8 @@ jobs:
         run: |
           $name = "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}"
           echo $name
-          Compress-Archive -Path .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\BigWork3.exe -DestinationPath $name.zip
+          # Compress-Archive -Path .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\BigWork3.exe -DestinationPath "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip"
+          zip -r "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip" .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\BigWork3.exe
           echo "::set-output name=artifactName::$name"
       # tag 上传Release
       - name: Release
