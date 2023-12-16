@@ -107,6 +107,13 @@ jobs:
       #   with:
       #     name: ${{ steps.package.outputs.packageName }}
       #     path: ${{ steps.package.outputs.packageName }}
+      # windeployqt
+      - name: windeployqt
+        shell: cmd
+        run: |
+          cd .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\release
+          windeployqt.exe BigWork3.exe
+
       # 打包
       - name: zip
         id: zip
@@ -114,7 +121,7 @@ jobs:
           $name = "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}"
           echo $name
           # Compress-Archive -Path .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\BigWork3.exe -DestinationPath "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip"
-          tar -a -c -f "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip" .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\release\BigWork3.exe
+          tar -a -c -f "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip" .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\release\*
           echo "::set-output name=artifactName::$name"
       # tag 上传Release
       - name: Release
