@@ -86,36 +86,40 @@ jobs:
           # echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
           # echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
           # echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
-          tree -L 3
+          tree /f /a > tree1.txt
+          tree /f /a C:\Program Files (x86)\Microsoft Visual Studio\2019\ > tree_vs.txt
+          tree /f /a D: >> tree_D.txt
           # call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files\mingw64\bin\gcc.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files\mingw64\bin\g++.exe" -SD:/WorkSpace/QT/BigWork3 -Bd:/WorkSpace/QT/BigWork3/build -G "MinGW Makefiles"
-          call "C:\Program Files\mingw64\bin\mingw32-make.exe" -C d:/WorkSpace/QT/BigWork3/build -f Makefile
-          cmake --build d:/WorkSpace/QT/BigWork3/build --config release --target all
+          # call "C:\Program Files\mingw64\bin\mingw32-make.exe" -C d:/WorkSpace/QT/BigWork3/build -f Makefile
+          # cmake --build d:/WorkSpace/QT/BigWork3/build --config release --target all
 
       # 打包 
-      - name: package
-        id: package      
-        env:
-          archiveName: ${{ matrix.qt_ver }}-${{ matrix.qt_target }}-${{ matrix.qt_arch }}
-          msvcArch: ${{ matrix.msvc_arch }}          
-        shell: pwsh
-        run: |
-          & scripts\windows-publish.ps1 ${env:archiveName} ${env:targetName}
-          # 记录packageName给后续step
-           $name = ${env:archiveName}
-           echo "::set-output name=packageName::$name"       
+      # - name: package
+      #   id: package      
+      #   env:
+      #     archiveName: ${{ matrix.qt_ver }}-${{ matrix.qt_target }}-${{ matrix.qt_arch }}
+      #     msvcArch: ${{ matrix.msvc_arch }}          
+      #   shell: pwsh
+      #   run: |
+      #     & scripts\windows-publish.ps1 ${env:archiveName} ${env:targetName}
+      #     # 记录packageName给后续step
+      #      $name = ${env:archiveName}
+      #      echo "::set-output name=packageName::$name"       
       # tag 查询github-Release
       # 上传artifacts          
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.package.outputs.packageName }}
-          path: ${{ steps.package.outputs.packageName }}
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ steps.package.outputs.packageName }}
+      #     path: ${{ steps.package.outputs.packageName }}
       # tag 上传Release
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ steps.package.outputs.packageName }}.zip
+            tree1.txt
+            tree_vs.txt
+            tree_D.txt
     #   - name: uploadRelease
     #     if: startsWith(github.event.ref, 'refs/tags/')
     #     uses: svenstaro/upload-release-action@v2
