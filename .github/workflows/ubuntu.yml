@@ -33,13 +33,6 @@ jobs:
         cmake ..
         make
         cmake --build . --target all --config Release
-    
-    - name: show build dir
-      run: |
-        ls -alh
-        ls -alh build
-        ls -alh build/BigWork3
-        tree
 
     - name: zip build dir
       run: |
