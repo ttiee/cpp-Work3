@@ -47,7 +47,7 @@ jobs:
         cd build
         cmake ..
         make
-        cmake --build . --target BigWork3
+        cmake --build . --target all
     
     - name: show build dir
       run: |
