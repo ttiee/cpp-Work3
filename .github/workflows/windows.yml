@@ -82,9 +82,12 @@ jobs:
           cmake --version
 
           echo ##########################################
-          dir /s
+          # dir /s
           cmake -S . -B .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release
           cmake --build .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release --target BigWork3 --config Release
+
+          echo ##########################################
+          dir /s
 
       # 打包 
       # - name: package
@@ -111,7 +114,7 @@ jobs:
           $name = "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}"
           echo $name
           # Compress-Archive -Path .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\BigWork3.exe -DestinationPath "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip"
-          tar -a -c -f "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip" .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\BigWork3.exe
+          tar -a -c -f "${{ matrix.qt_ver }}-${{ matrix.qt_arch }}.zip" .\build-BigWork3-Desktop_Qt_6_6_1_MSVC2019_64bit-Release\release\BigWork3.exe
           echo "::set-output name=artifactName::$name"
       # tag 上传Release
       - name: Release
