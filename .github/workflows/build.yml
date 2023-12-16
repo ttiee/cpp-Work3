@@ -47,7 +47,7 @@ jobs:
         cd build
         cmake ..
         make
-        cmake --build . --target all
+        cmake --build . --target all --config Release
     
     - name: show build dir
       run: |
@@ -58,7 +58,7 @@ jobs:
 
     - name: zip build dir
       run: |
-        zip -r build.zip build
+        zip -r build-Ubuntu.zip build
 
     # - name: Create release
     #   id: create_release
@@ -86,4 +86,4 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          build.zip
+          build-Ubuntu.zip
