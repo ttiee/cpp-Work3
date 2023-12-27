@@ -62,6 +62,8 @@ CMakeLists.txt.user*
 
 # VS code generated files
 .vscode/*
+build/*
+!build/.gitkeep
 
 # MinGW generated files
 *.Debug
