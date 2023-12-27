@@ -13,6 +13,10 @@ git clone https://github.com/ttiee/cpp-Work3.git
 
 大一C语言大作业，一个简单的打字游戏。
 
+> ~~(Qt Creator没license，开发不了了😵‍💫)~~
+> 
+> 等我Linux配置好Qt开发环境再说吧😴
+
 ## 项目结构
 
 ```bash
