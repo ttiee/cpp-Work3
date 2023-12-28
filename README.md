@@ -1,6 +1,6 @@
 # 下载
 
-1. 到[Release](https://github.com/ttiee/cpp-Work3/releases)下载打包好的`exe`文件
+1. 到[Release](https://github.com/ttiee/cpp-Work3/releases/tag/v0.5.0)下载打包好的`exe`文件
 
 2. 下载源码，使用`Qt Creator`打开，编译运行(Qt版本`6.6.1`)
 ```bash
