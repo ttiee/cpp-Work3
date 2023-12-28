@@ -7,7 +7,7 @@
 
 ## 项目简介 | Project Introduction
 
-使用C++结合`Win API`编写的打字游戏。
+使用 `C++` 结合 `Win API` 编写的打字游戏。
 
 ## 项目功能 | Features
 
@@ -20,6 +20,10 @@
 - [ ] 添加游戏关卡选择
 - [ ] 添加游戏设置
 - [ ] 添加游戏排行榜
+
+## 下载 | Download
+
+到 [`Release`](https://github.com/ttiee/cpp-Work3/releases/tag/v0.4.0) 页面下载最新版本。
 
 
 # 发个牢骚 | Complain
