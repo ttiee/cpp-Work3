@@ -3,6 +3,37 @@
 #include "myfunc.h"
 
 
+void PlayCorrectSound()
+{
+	PlaySound(TEXT("sound/correct.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void PlayWrongSound()
+{
+	PlaySound(TEXT("sound/wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void PlayStartSound()
+{
+	PlaySound(TEXT("sound/start.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void PlayGameOverSound()
+{
+	PlaySound(TEXT("sound/quack.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void PlayAboutSound()
+{
+	PlaySound(TEXT("sound/tuturu.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void PlayQuitSound()
+{
+    PlaySound(TEXT("sound/vk.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+
+
 void DrawBk(HDC hdc, int left, int top, int right, int bottom)
 {
     Rectangle(hdc, left, top, right, bottom);

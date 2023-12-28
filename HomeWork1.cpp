@@ -32,6 +32,18 @@ void GameOver(HDC hdc, int x, int y);
 
 void Fire(HDC hdc, int x, int y1, int y2);
 
+void PlayCorrectSound();
+
+void PlayWrongSound();
+
+void PlayStartSound();
+
+void PlayGameOverSound();
+
+void PlayAboutSound();
+
+void PlayQuitSound();
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -68,7 +80,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
-    MessageBoxW(NULL, TEXT("游戏结束"), TEXT("打字游戏 v0.5.0"), MB_OK);
+    //MessageBoxW(NULL, TEXT("游戏结束"), TEXT("打字游戏 v0.5.0"), MB_OK);
     return (int) msg.wParam;
 }
 
@@ -166,7 +178,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				InvalidateRect(hWnd, 0, 0);
 				break;
             case 2:
+                KillTimer(hWnd, 2);
+                PlayGameOverSound();
 				InvalidateRect(hWnd, 0, 0);
+				break;
+            case 3:
+                KillTimer(hWnd, 3);
+				DestroyWindow(hWnd);
 				break;
         }
         break;
@@ -182,10 +200,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			x = left + 5 + (c1 - 'A') * 9;
 			y = top;
 			iScoring++;
+            PlayCorrectSound();
 		}
         else
         {
 			iFail++;
+            PlayWrongSound();
 		}
     }
     break;
@@ -196,10 +216,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             switch (wmId)
             {
             case IDM_ABOUT:
+                PlayAboutSound();
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
             case IDM_EXIT:
-                DestroyWindow(hWnd);
+                PlayQuitSound();
+                SetTimer(hWnd, 3, 500, NULL);
+                //DestroyWindow(hWnd);
                 break;
             case ID_START: 
                 if (gameover == 1)
@@ -207,6 +230,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 gameover = 0;
                 iScoring = 0;
                 iFail = 0;
+                UpdateWindow(hWnd);
+                PlayStartSound();
                 c1 = rand() % 26 + 'A';
                 x = left + 5 + (c1 - 'A') * 9;
                 y = top;

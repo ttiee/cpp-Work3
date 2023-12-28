@@ -13,3 +13,6 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <mmsystem.h>
+
+#pragma comment(lib, "winmm.lib")

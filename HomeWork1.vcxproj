@@ -144,6 +144,18 @@
     <Image Include="HomeWork1.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="mysound.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\fart-button.wav" />
+    <Media Include="sound\quack.wav" />
+    <Media Include="sound\start.wav" />
+    <Media Include="sound\tuturu.wav" />
+    <Media Include="sound\vk.wav" />
+    <Media Include="sound\woo.wav" />
+    <Media Include="sound\wrong.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
