@@ -24,6 +24,15 @@ int x = -1, y = -1;
 int iScoring = 0, iFail = 0;
 int gameover = 0;
 
+void DrawBk(HDC hdc, int left, int top, int right, int bottom);
+
+void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
+
+void GameOver(HDC hdc, int x, int y);
+
+void Fire(HDC hdc, int x, int y1, int y2);
+
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -37,6 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_HOMEWORK1, szWindowClass, MAX_LOADSTRING);
+    MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OK);
     MyRegisterClass(hInstance);
 
     // 执行应用程序初始化:
@@ -58,7 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
-
+    MessageBoxW(NULL, TEXT("游戏结束"), TEXT("打字游戏 v0.5.0"), MB_OK);
     return (int) msg.wParam;
 }
 
@@ -104,8 +114,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 将实例句柄存储在全局变量中
 
+   int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+   int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+   int WindowWidth = 500;
+   int WindowHeight = 540;
+
+   int x = (screenWidth - WindowWidth) / 2;
+   int y = (screenHeight - WindowHeight) / 2;
+
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      x, y, WindowWidth, WindowHeight, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -116,51 +135,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    UpdateWindow(hWnd);
 
    return TRUE;
-}
-
-void DrawBk(HDC hdc, int left, int top, int right, int bottom)
-{
-	Rectangle(hdc, left, top, right, bottom);
-    char s[100] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    TextOutA(hdc, left + 5, bottom - 25, s, strlen(s));
-}
-
-void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
-{
-	char szTemp[32];
-	TextOutA(hdc, x, y, "当前得分：", strlen("当前得分："));\
-    y += 20;
-    sprintf(szTemp, "%d", iScoring);
-    TextOutA(hdc, x, y, szTemp, strlen(szTemp));
-    y += 20;
-    TextOutA(hdc, x, y, "当前失误：", strlen("当前失误："));
-    y += 20;
-    sprintf(szTemp, "%d", iFail);
-    TextOutA(hdc, x, y, szTemp, strlen(szTemp));
-}
-
-void GameOver(HDC hdc, int x, int y)
-{
-	COLORREF OldColor, NewColor = RGB(rand() % 255, rand() % 255, rand() % 255);
-    OldColor = SetTextColor(hdc, NewColor);
-    TextOutA(hdc, x, y, "Game Over!", strlen("Game Over!"));
-    SetTextColor(hdc, OldColor);
-}
-
-void Fire(HDC hdc, int x, int y1, int y2)
-{
-    HPEN hOldPen, hNewPen = CreatePen(PS_DASHDOTDOT, 1, RGB(255, 0, 0));
-    hOldPen = (HPEN)SelectObject(hdc, hNewPen);
-    MoveToEx(hdc, x, y1, NULL);
-    LineTo(hdc, x, y2);
-    Sleep(100);
-    HPEN hNewPen2 = CreatePen(PS_SOLID, 1, RGB(255, 255, 255));
-    SelectObject(hdc, hNewPen2);
-    MoveToEx(hdc, x, y1, NULL);
-    LineTo(hdc, x, y2);
-    SelectObject(hdc, hOldPen);
-    DeleteObject(hNewPen);
-    DeleteObject(hNewPen2);
 }
 
 
@@ -251,7 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             DrawBk(hdc, left, top, right, bottom);
             ShowScoring(hdc, right + 20, top + 50, iScoring, iFail);
             if (gameover == 1)
-				GameOver(hdc, right + 80, top + 130);
+				GameOver(hdc, right + 20, top + 130);
             else
             {
                 char szTemp[8];
