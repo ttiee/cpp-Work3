@@ -18,13 +18,24 @@ int char_x = -1, char_y = -1;
 int iScoring = 0, iFail = 0;
 int gameover = 0;
 
+int WindowWidth = 500;
+int WindowHeight = 540;
+
+enum GameState {
+	StartScreen,
+	InGame,
+	GameOverScreen
+};
+
+GameState currentState = StartScreen;
+
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-void DrawBk(HDC hdc, int left, int top, int right, int bottom);
+void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);
 
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
 
@@ -44,19 +55,24 @@ void PlayAboutSound();
 
 void PlayQuitSound();
 
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
+
 void SpawnChar() {
 	target_char = rand() % 26 + 'A';
 	char_x = left + 5 + (target_char - 'A') * 9;
 	char_y = top;
 }
 
-enum GameState {
-	StartScreen,
-	InGame,
-	GameOverScreen
-};
-
-GameState currentState = StartScreen;
+void StartGame(HWND hWnd) {
+	currentState = InGame;
+	iScoring = 0;
+	iFail = 0;
+	SpawnChar();
+	InvalidateRect(hWnd, 0, 0);
+	//UpdateWindow(hWnd);
+	PlayStartSound();
+	SetTimer(hWnd, 1, 10, NULL);
+}
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -73,8 +89,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadStringW(hInstance, IDC_HOMEWORK1, szWindowClass, MAX_LOADSTRING);
 	//MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OK);
-	if (MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OKCANCEL) == IDCANCEL)
-		return 0;
+	//if (MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OKCANCEL) == IDCANCEL)
+	//	return 0;
 	MyRegisterClass(hInstance);
 
 	// 执行应用程序初始化:
@@ -145,9 +161,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
 
-	int WindowWidth = 500;
-	int WindowHeight = 540;
-
 	int x = (screenWidth - WindowWidth) / 2;
 	int y = (screenHeight - WindowHeight) / 2;
 
@@ -184,7 +197,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 1:
-			char_y = char_y + iScoring / 10 + 1;
+			char_y = char_y + iScoring / 10 + 100;
 			if (char_y > bottom - 40)
 			{
 				currentState = GameOverScreen;
@@ -195,7 +208,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd, 0, 0);
 			break;
 		case 2:
-			KillTimer(hWnd, 2);
+			//KillTimer(hWnd, 2);
+			InvalidateRect(hWnd, 0, 0);
 			break;
 		case 3:
 			DestroyWindow(hWnd);
@@ -204,23 +218,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_CHAR:
 	{
-		if (currentState != InGame)
-			break;
-		my_char = (wParam >= 'a' && wParam <= 'z') ? wParam + 'A' - 'a' : wParam;
-		HDC hdc = GetDC(hWnd);
-		Fire(hdc, left + 5 + (my_char - 'A') * 9 + 4, top, bottom);
-		ReleaseDC(hWnd, hdc);
-		if (my_char == target_char)
+		if (currentState == InGame) {
+			if (wParam < 'a' || wParam > 'z')
+				break;
+			my_char = wParam - 'a' + 'A';
+			HDC hdc = GetDC(hWnd);
+			Fire(hdc, left + 5 + (my_char - 'A') * 9 + 4, top, bottom);
+			ReleaseDC(hWnd, hdc);
+			if (my_char == target_char)
+			{
+				SpawnChar();
+				iScoring++;
+				PlayCorrectSound();
+			}
+			else
+			{
+				iFail++;
+				PlayWrongSound();
+			}
+		}
+		else if (currentState == StartScreen)
 		{
-			SpawnChar();
-			iScoring++;
-			PlayCorrectSound();
+			if (wParam == 's' || wParam == 'S')
+			{
+				StartGame(hWnd);
+			}
 		}
 		else
 		{
-			iFail++;
-			PlayWrongSound();
+			if (wParam == 'r' || wParam == 'R')
+			{
+				StartGame(hWnd);
+				InvalidateRect(hWnd, 0, 0);
+			}
 		}
+
 	}
 	break;
 	case WM_COMMAND:
@@ -238,14 +270,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SetTimer(hWnd, 3, 500, NULL);
 			break;
 		case ID_START:
-			currentState = InGame;
-			iScoring = 0;
-			iFail = 0;
-			InvalidateRect(hWnd, 0, 0);
-			//UpdateWindow(hWnd);
-			PlayStartSound();
-			SpawnChar();
-			SetTimer(hWnd, 1, 10, NULL);
+			StartGame(hWnd);
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
@@ -257,15 +282,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
 		// TODO: 在此处添加使用 hdc 的任何绘图代码...
-		DrawBk(hdc, left, top, right, bottom);
-		if (currentState == GameOverScreen)
-			GameOver(hdc, right + 20, top + 130);
+
+		DrawWhiteBack(hdc, 0, 0, WindowWidth, WindowHeight);
+		if (currentState == GameOverScreen) {
+			GameOver(hdc, WindowHeight / 2, WindowWidth / 2);
+			SetTimer(hWnd, 2, 300, NULL);
+		}
 		else if (currentState == StartScreen)
 		{
-			;
+			Draw_Ingame_rect(hdc, left, top, right, bottom);
 		}
 		else
 		{
+			Draw_Ingame_rect(hdc, left, top, right, bottom);
 			ShowScoring(hdc, right + 20, top + 50, iScoring, iFail);
 			char szTemp[8];
 			sprintf(szTemp, "%c", target_char);
