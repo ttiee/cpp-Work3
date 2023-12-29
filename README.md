@@ -23,7 +23,7 @@
 
 ## 下载 | Download
 
-到 [`Release`](https://github.com/ttiee/cpp-Work3/releases/tag/v0.4.0) 页面下载最新版本。
+到 [`Release`](https://github.com/ttiee/cpp-Work3/releases/) 页面下载最新版本。
 
 
 # 发个牢骚 | Complain
