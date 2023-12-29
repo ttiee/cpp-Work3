@@ -4,6 +4,8 @@
 
 extern int iScoring, iFail;
 
+void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
+
 
 void PlayCorrectSound()
 {
@@ -74,6 +76,17 @@ void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom)
 	DrawImage(hdc, left, top, right - left, bottom - top, filename);
 }
 
+void GameOver(HDC hdc, int x, int y)
+{
+	const char* filename = "image/Game_Over_1.bmp";
+	int w = 216, h = 216;
+	int x1 = x - w / 2 - 32, y1 = y - h;
+
+	DrawImage(hdc, x1, y1, w, h, filename);
+	ShowScoring(hdc, x1, y1 + 200, iScoring, iFail);
+	DrawImage(hdc, x1, y1 + 300, 216, 57, "image/Restart.bmp");
+}
+
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
 {
 	char szTemp[32];
@@ -96,17 +109,6 @@ void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
 //    TextOutA(hdc, x, y, "Game Over!", strlen("Game Over!"));
 //    SetTextColor(hdc, OldColor);
 //}
-
-void GameOver(HDC hdc, int x, int y)
-{
-	const char* filename = "image/Game_Over_1.bmp";
-	int w = 216, h = 216;
-	int x1 = x - w / 2 - 32, y1 = y - h;
-
-	DrawImage(hdc, x1, y1, w, h, filename);
-	ShowScoring(hdc, x1, y1 + 200, iScoring, iFail);
-	DrawImage(hdc, x1, y1 + 300, 216, 57, "image/Restart.bmp");
-}
 
 void Fire(HDC hdc, int x, int y1, int y2)
 {

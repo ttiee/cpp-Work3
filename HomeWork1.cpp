@@ -281,25 +281,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hWnd, &ps);
-		// TODO: 在此处添加使用 hdc 的任何绘图代码...
 
-		DrawWhiteBack(hdc, 0, 0, WindowWidth, WindowHeight);
+		// 创建双缓冲
+		HDC hBackDC = CreateCompatibleDC(hdc);
+		HBITMAP hBackBitmap = CreateCompatibleBitmap(hdc, WindowWidth, WindowHeight);
+		SelectObject(hBackDC, hBackBitmap);
+
+		// TODO: 在此处添加使用 hBackDC 的任何绘图代码...
+
+		DrawWhiteBack(hBackDC, 0, 0, WindowWidth, WindowHeight);
 		if (currentState == GameOverScreen) {
-			GameOver(hdc, WindowHeight / 2, WindowWidth / 2);
+			GameOver(hBackDC, WindowWidth / 2, WindowHeight / 2);
 			SetTimer(hWnd, 2, 300, NULL);
 		}
 		else if (currentState == StartScreen)
 		{
-			Draw_Ingame_rect(hdc, left, top, right, bottom);
+			Draw_Ingame_rect(hBackDC, left, top, right, bottom);
 		}
 		else
 		{
-			Draw_Ingame_rect(hdc, left, top, right, bottom);
-			ShowScoring(hdc, right + 20, top + 50, iScoring, iFail);
+			Draw_Ingame_rect(hBackDC, left, top, right, bottom);
+			ShowScoring(hBackDC, right + 20, top + 50, iScoring, iFail);
 			char szTemp[8];
 			sprintf(szTemp, "%c", target_char);
-			TextOutA(hdc, char_x, char_y, szTemp, strlen(szTemp));
+			TextOutA(hBackDC, char_x, char_y, szTemp, strlen(szTemp));
 		}
+
+		// 将缓冲区内容一次性拷贝到屏幕
+		BitBlt(hdc, 0, 0, WindowWidth, WindowHeight, hBackDC, 0, 0, SRCCOPY);
+
+		// 清理缓冲区资源
+		DeleteDC(hBackDC);
+		DeleteObject(hBackBitmap);
+
 		EndPaint(hWnd, &ps);
 	}
 	break;
