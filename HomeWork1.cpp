@@ -57,11 +57,7 @@ void PlayQuitSound();
 
 void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
 
-void SpawnChar() {
-	target_char = rand() % 26 + 'A';
-	char_x = left + 5 + (target_char - 'A') * 9;
-	char_y = top;
-}
+void SpawnChar();
 
 void StartGame(HWND hWnd) {
 	currentState = InGame;

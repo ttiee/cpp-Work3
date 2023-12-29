@@ -3,9 +3,51 @@
 #include "myfunc.h"
 
 extern int iScoring, iFail;
+extern int char_x, char_y;
+extern char target_char;
+extern int left, top, right, bottom;
 
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
 
+void GameOver(HDC hdc, int x, int y);
+
+void Fire(HDC hdc, int x, int y1, int y2);
+
+void PlayCorrectSound();
+
+void PlayWrongSound();
+
+void PlayStartSound();
+
+void PlayGameOverSound();
+
+void PlayAboutSound();
+
+void PlayQuitSound();
+
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
+
+void SpawnChar();
+
+void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);
+
+void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom);
+
+void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename);
+
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
+
+void GameOver(HDC hdc, int x, int y);
+
+void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
+
+void Fire(HDC hdc, int x, int y1, int y2);
+
+void SpawnChar() {
+	target_char = rand() % 26 + 'A';
+	char_x = left + 5 + (target_char - 'A') * 9;
+	char_y = top;
+}
 
 void PlayCorrectSound()
 {
@@ -36,14 +78,6 @@ void PlayQuitSound()
 {
 	PlaySound(TEXT("sound/vk.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
-
-
-//void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom)
-//{
-//    Rectangle(hdc, left, top, right, bottom);
-//    char s[100] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-//    TextOutA(hdc, left + 5, bottom - 25, s, strlen(s));
-//}
 
 void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom)
 {
@@ -101,14 +135,6 @@ void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
 	sprintf(szTemp, "%d", iFail);
 	TextOutA(hdc, x, y, szTemp, strlen(szTemp));
 }
-
-//void GameOver(HDC hdc, int x, int y)
-//{
-//    COLORREF OldColor, NewColor = RGB(rand() % 255, rand() % 255, rand() % 255);
-//    OldColor = SetTextColor(hdc, NewColor);
-//    TextOutA(hdc, x, y, "Game Over!", strlen("Game Over!"));
-//    SetTextColor(hdc, OldColor);
-//}
 
 void Fire(HDC hdc, int x, int y1, int y2)
 {
