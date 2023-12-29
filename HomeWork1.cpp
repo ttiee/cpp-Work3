@@ -13,8 +13,8 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
 
 int left = 100, top = 20, right = left + 250, bottom = top + 400;
-char c1, c2;
-int x = -1, y = -1;
+char target_char, my_char;
+int char_x = -1, char_y = -1;
 int iScoring = 0, iFail = 0;
 int gameover = 0;
 
@@ -43,6 +43,20 @@ void PlayGameOverSound();
 void PlayAboutSound();
 
 void PlayQuitSound();
+
+void SpawnChar() {
+    target_char = rand() % 26 + 'A';
+	char_x = left + 5 + (target_char - 'A') * 9;
+	char_y = top;
+}
+
+enum GameState {
+    StartScreen,
+    InGame,
+    GameOverScreen
+};
+
+GameState currentState = StartScreen;
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -170,8 +184,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
             case 1:
-				y = y + iScoring / 10 + 1;
-                if (y > bottom - 40)
+				char_y = char_y + iScoring / 10 + 1;
+                if (char_y > bottom - 40)
                 {
                     gameover = 1;
                     KillTimer(hWnd, 1);
@@ -191,15 +205,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_CHAR:
     {
-        c2 = (wParam >= 'a' && wParam <= 'z') ? wParam + 'A' - 'a' : wParam;
+        my_char = (wParam >= 'a' && wParam <= 'z') ? wParam + 'A' - 'a' : wParam;
         HDC hdc = GetDC(hWnd);
-        Fire(hdc, left + 5 + (c2 - 'A')*9 + 4, top, bottom);
+        Fire(hdc, left + 5 + (my_char - 'A')*9 + 4, top, bottom);
         ReleaseDC(hWnd, hdc);
-        if (c2 == c1)
+        if (my_char == target_char)
         {
-			c1 = rand() % 26 + 'A';
-			x = left + 5 + (c1 - 'A') * 9;
-			y = top;
+			SpawnChar();
 			iScoring++;
             PlayCorrectSound();
 		}
@@ -230,11 +242,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 gameover = 0;
                 iScoring = 0;
                 iFail = 0;
-                UpdateWindow(hWnd);
+                InvalidateRect(hWnd, 0, 0);
+                //UpdateWindow(hWnd);
                 PlayStartSound();
-                c1 = rand() % 26 + 'A';
-                x = left + 5 + (c1 - 'A') * 9;
-                y = top;
+                SpawnChar();
                 SetTimer(hWnd, 1, 10, NULL);
                 break;
             default:
@@ -254,8 +265,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             else
             {
                 char szTemp[8];
-                sprintf(szTemp, "%c", c1);
-                TextOutA(hdc, x, y, szTemp, strlen(szTemp));
+                sprintf(szTemp, "%c", target_char);
+                TextOutA(hdc, char_x, char_y, szTemp, strlen(szTemp));
             }
             EndPaint(hWnd, &ps);
         }
@@ -263,7 +274,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_CLOSE:
         SetTimer(hWnd, 3, 500, NULL);
-        HIDE_WINDOW(hWnd);
+        //HIDE_WINDOW(hWnd);
         PlayQuitSound();
 		//DestroyWindow(hWnd);
 		break;
