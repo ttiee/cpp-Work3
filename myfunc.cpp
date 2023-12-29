@@ -7,41 +7,41 @@ extern int char_x, char_y;
 extern char target_char;
 extern int left, top, right, bottom;
 
-void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
+void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);	// 显示得分
 
-void GameOver(HDC hdc, int x, int y);
+void GameOver(HDC hdc, int x, int y);	// 显示游戏结束
 
-void Fire(HDC hdc, int x, int y1, int y2);
+void Fire(HDC hdc, int x, int y1, int y2);	// 显示打击效果
 
-void PlayCorrectSound();
+void PlayCorrectSound();	// 播放正确音效
 
-void PlayWrongSound();
+void PlayWrongSound();	// 播放错误音效
 
-void PlayStartSound();
+void PlayStartSound();	// 播放开始音效
 
-void PlayGameOverSound();
+void PlayGameOverSound();	// 播放游戏结束音效
 
-void PlayAboutSound();
+void PlayAboutSound();	// 播放关于音效
 
-void PlayQuitSound();
+void PlayQuitSound();	// 播放退出音效
 
-void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);	// 绘制白色背景
 
-void SpawnChar();
+void SpawnChar();	// 生成目标字符
 
-void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);
+void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);	// 绘制游戏区域
 
-void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom);
+void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom);	// 绘制开始界面
 
-void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename);
+void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename);	// 绘制图片函数
 
-void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);		// 绘制白色背景
 
-void GameOver(HDC hdc, int x, int y);
+void GameOver(HDC hdc, int x, int y);	// 显示游戏结束
 
-void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
+void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);	// 显示得分
 
-void Fire(HDC hdc, int x, int y1, int y2);
+void Fire(HDC hdc, int x, int y1, int y2);	// 显示打击效果
 
 void SpawnChar() {
 	target_char = rand() % 26 + 'A';
@@ -49,36 +49,43 @@ void SpawnChar() {
 	char_y = top;
 }
 
+// 播放正确音效
 void PlayCorrectSound()
 {
 	PlaySound(TEXT("sound/correct.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
+// 播放错误音效
 void PlayWrongSound()
 {
 	PlaySound(TEXT("sound/wrong.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
+// 播放开始音效
 void PlayStartSound()
 {
 	PlaySound(TEXT("sound/start.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
+// 播放游戏结束音效
 void PlayGameOverSound()
 {
 	PlaySound(TEXT("sound/quack.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
+// 播放关于音效
 void PlayAboutSound()
 {
 	PlaySound(TEXT("sound/tuturu.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
+// 播放退出音效
 void PlayQuitSound()
 {
 	PlaySound(TEXT("sound/vk.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 
+// 绘制白色背景
 void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom)
 {
 	HBRUSH hOldBrush, hNewBrush = CreateSolidBrush(RGB(255, 255, 255));
@@ -88,6 +95,7 @@ void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom)
 	DeleteObject(hNewBrush);
 }
 
+// 绘制图片函数
 void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename)
 {
 	HDC hMemDC = CreateCompatibleDC(hdc);
@@ -98,18 +106,21 @@ void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename)
 	DeleteObject(hBitmap);
 }
 
+// 绘制游戏内界面
 void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom)
 {
 	const char* filename = "image/Win_game_bk_e.bmp";
 	DrawImage(hdc, left, top, right - left, bottom - top, filename);
 }
 
+// 绘制开始界面
 void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom)
 {
 	const char* filename = "image/Start.bmp";
 	DrawImage(hdc, left, top, right - left, bottom - top, filename);
 }
 
+// 绘制游戏结束界面
 void GameOver(HDC hdc, int x, int y)
 {
 	const char* filename = "image/Game_Over_1.bmp";
@@ -121,6 +132,7 @@ void GameOver(HDC hdc, int x, int y)
 	DrawImage(hdc, x1, y1 + 300, 216, 57, "image/Restart.bmp");
 }
 
+// 显示得分
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
 {
 	char szTemp[32];
@@ -136,6 +148,7 @@ void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
 	TextOutA(hdc, x, y, szTemp, strlen(szTemp));
 }
 
+// 绘制打击效果
 void Fire(HDC hdc, int x, int y1, int y2)
 {
 	HPEN hOldPen, hNewPen = CreatePen(PS_DASHDOTDOT, 1, RGB(255, 0, 0));

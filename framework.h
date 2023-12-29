@@ -13,6 +13,6 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-#include <mmsystem.h>
+#include <mmsystem.h>	// 音效库
 
-#pragma comment(lib, "winmm.lib")
+#pragma comment(lib, "winmm.lib")	// 音效库

@@ -13,14 +13,14 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
 
 int left = 100, top = 20, right = left + 250, bottom = top + 400;
-char target_char, my_char;
-int char_x = -1, char_y = -1;
-int iScoring = 0, iFail = 0;
-int gameover = 0;
+char target_char, my_char;	// target_char: 目标字符，my_char: 用户输入的字符
+int char_x = -1, char_y = -1;	// char_x: 目标字符的x坐标，char_y: 目标字符的y坐标
+int iScoring = 0, iFail = 0;	// iScoring: 得分，iFail: 失误
 
-int WindowWidth = 500;
-int WindowHeight = 540;
+int WindowWidth = 500;	// 窗口宽度
+int WindowHeight = 540;	// 窗口高度
 
+// 游戏状态
 enum GameState {
 	StartScreen,
 	InGame,
@@ -35,39 +35,40 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);
+void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);	// 绘制游戏区域
 
-void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);
+void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);	// 显示得分
 
-void GameOver(HDC hdc, int x, int y);
+void GameOver(HDC hdc, int x, int y);	// 显示游戏结束
 
-void Fire(HDC hdc, int x, int y1, int y2);
+void Fire(HDC hdc, int x, int y1, int y2);	// 显示打击效果
 
-void PlayCorrectSound();
+void PlayCorrectSound();	// 播放正确音效
 
-void PlayWrongSound();
+void PlayWrongSound();	// 播放错误音效
 
-void PlayStartSound();
+void PlayStartSound();	// 播放开始音效
 
-void PlayGameOverSound();
+void PlayGameOverSound();	// 播放游戏结束音效
 
-void PlayAboutSound();
+void PlayAboutSound();	// 播放关于音效
 
-void PlayQuitSound();
+void PlayQuitSound();	// 播放退出音效
 
-void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);	// 绘制白色背景
 
-void SpawnChar();
+void SpawnChar();	// 生成目标字符
 
+// 开始游戏
 void StartGame(HWND hWnd) {
 	currentState = InGame;
 	iScoring = 0;
 	iFail = 0;
-	SpawnChar();
-	InvalidateRect(hWnd, 0, 0);
+	SpawnChar();	// 生成目标字符
+	InvalidateRect(hWnd, 0, 0);	// 刷新窗口
 	//UpdateWindow(hWnd);
 	PlayStartSound();
-	SetTimer(hWnd, 1, 10, NULL);
+	SetTimer(hWnd, 1, 10, NULL);	// 设置定时器
 }
 
 
@@ -154,11 +155,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // 将实例句柄存储在全局变量中
 
-	int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-	int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+	int screenWidth = GetSystemMetrics(SM_CXSCREEN);	// 获取屏幕宽度
+	int screenHeight = GetSystemMetrics(SM_CYSCREEN);	// 获取屏幕高度
 
-	int x = (screenWidth - WindowWidth) / 2;
-	int y = (screenHeight - WindowHeight) / 2;
+	int x = (screenWidth - WindowWidth) / 2;	// 计算窗口左上角x坐标
+	int y = (screenHeight - WindowHeight) / 2;	// 计算窗口左上角y坐标
 
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		x, y, WindowWidth, WindowHeight, nullptr, nullptr, hInstance, nullptr);
@@ -285,7 +286,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// TODO: 在此处添加使用 hBackDC 的任何绘图代码...
 
+		// 绘制白色背景，防止出现黑色背景，同时遮挡旧页面
 		DrawWhiteBack(hBackDC, 0, 0, WindowWidth, WindowHeight);
+		// 绘制游戏区域，根据游戏状态绘制不同的内容
 		if (currentState == GameOverScreen) {
 			GameOver(hBackDC, WindowWidth / 2, WindowHeight / 2);
 			SetTimer(hWnd, 2, 300, NULL);
