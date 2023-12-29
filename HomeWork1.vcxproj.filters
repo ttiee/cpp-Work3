@@ -51,6 +51,9 @@
     <Image Include="HomeWork1.ico">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="image\bk.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="mysound.resx">

@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="HomeWork1.ico" />
+    <Image Include="image\bk.bmp" />
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>

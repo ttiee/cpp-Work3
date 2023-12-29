@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-// Windows 头文件
+// Bug贼多。。。我真服了。。。
 #include "myfunc.h"
 
 
@@ -34,11 +34,27 @@ void PlayQuitSound()
 }
 
 
+//void DrawBk(HDC hdc, int left, int top, int right, int bottom)
+//{
+//    Rectangle(hdc, left, top, right, bottom);
+//    char s[100] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//    TextOutA(hdc, left + 5, bottom - 25, s, strlen(s));
+//}
+
+void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename)
+{
+	HDC hMemDC = CreateCompatibleDC(hdc);
+	HBITMAP hBitmap = (HBITMAP)LoadImageA(NULL, filename, IMAGE_BITMAP, w, h, LR_LOADFROMFILE);
+	SelectObject(hMemDC, hBitmap);
+	BitBlt(hdc, x, y, w, h, hMemDC, 0, 0, SRCCOPY);
+	DeleteDC(hMemDC);
+	DeleteObject(hBitmap);
+}
+
 void DrawBk(HDC hdc, int left, int top, int right, int bottom)
 {
-    Rectangle(hdc, left, top, right, bottom);
-    char s[100] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    TextOutA(hdc, left + 5, bottom - 25, s, strlen(s));
+    const char* filename = "image/Win_game_bk_e.bmp";
+	DrawImage(hdc, left, top, right - left, bottom - top, filename);
 }
 
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
