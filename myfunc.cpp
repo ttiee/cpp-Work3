@@ -68,6 +68,12 @@ void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom)
 	DrawImage(hdc, left, top, right - left, bottom - top, filename);
 }
 
+void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom)
+{
+	const char* filename = "image/Start.bmp";
+	DrawImage(hdc, left, top, right - left, bottom - top, filename);
+}
+
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
 {
 	char szTemp[32];

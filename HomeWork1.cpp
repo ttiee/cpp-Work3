@@ -197,7 +197,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case 1:
-			char_y = char_y + iScoring / 10 + 100;
+			char_y = char_y + iScoring / 10 + 1;
 			if (char_y > bottom - 40)
 			{
 				currentState = GameOverScreen;
