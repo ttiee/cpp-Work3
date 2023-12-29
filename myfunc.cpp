@@ -46,7 +46,8 @@ void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail)
     char szTemp[32];
     TextOutA(hdc, x, y, "当前得分：", strlen("当前得分：")); \
         y += 20;
-    sprintf(szTemp, "%d", iScoring);
+    //sprintf(szTemp, "%d", iScoring);
+    _itoa(iScoring, szTemp, 10);
     TextOutA(hdc, x, y, szTemp, strlen(szTemp));
     y += 20;
     TextOutA(hdc, x, y, "当前失误：", strlen("当前失误："));

@@ -58,7 +58,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_HOMEWORK1, szWindowClass, MAX_LOADSTRING);
-    MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OK);
+    //MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OK);
+    if (MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OKCANCEL) == IDCANCEL)
+		return 0;
     MyRegisterClass(hInstance);
 
     // 执行应用程序初始化:
@@ -183,8 +185,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				InvalidateRect(hWnd, 0, 0);
 				break;
             case 3:
-                KillTimer(hWnd, 3);
-				DestroyWindow(hWnd);
+                DestroyWindow(hWnd);
 				break;
         }
         break;
@@ -222,7 +223,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_EXIT:
                 PlayQuitSound();
                 SetTimer(hWnd, 3, 500, NULL);
-                //DestroyWindow(hWnd);
                 break;
             case ID_START: 
                 if (gameover == 1)
@@ -260,7 +260,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
+
+    case WM_CLOSE:
+        SetTimer(hWnd, 3, 500, NULL);
+        HIDE_WINDOW(hWnd);
+        PlayQuitSound();
+		//DestroyWindow(hWnd);
+		break;
     case WM_DESTROY:
+        KillTimer(hWnd, 1);
+        KillTimer(hWnd, 2);
+        KillTimer(hWnd, 3);
         PostQuitMessage(0);
         break;
     default:
