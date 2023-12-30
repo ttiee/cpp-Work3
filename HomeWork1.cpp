@@ -397,6 +397,11 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
 		}
+		else if (LOWORD(wParam) == IDC_GITHUB)
+		{
+			ShellExecute(NULL, TEXT("open"), TEXT("https://github.com/ttiee/cpp-Work3/tree/Win-dev"), NULL, NULL, SW_SHOWNORMAL);
+			return (INT_PTR)TRUE;
+		}
 		break;
 	}
 	return (INT_PTR)FALSE;

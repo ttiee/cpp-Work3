@@ -3,6 +3,7 @@
 // 供 HomeWork1.rc 使用
 //
 #define IDC_MYICON                      2
+#define IDC_GITHUB                      3
 #define IDD_HOMEWORK1_DIALOG            102
 #define IDS_APP_TITLE                   103
 #define IDD_ABOUTBOX                    103

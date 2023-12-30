@@ -110,7 +110,7 @@ void DrawImage(HDC hdc, int x, int y, int w, int h, const char* filename)
 void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom)
 {
 	const char* filename = "image/Win_game_bk_e.bmp";
-	DrawImage(hdc, left, top, right - left, bottom - top, filename);
+	DrawImage(hdc, left - 10, top - 10, right - left + 20, bottom - top, filename);
 }
 
 // 绘制开始界面
