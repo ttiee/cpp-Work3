@@ -90,7 +90,7 @@ void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom)
 {
 	HBRUSH hOldBrush, hNewBrush = CreateSolidBrush(RGB(255, 255, 255));
 	hOldBrush = (HBRUSH)SelectObject(hdc, hNewBrush);
-	Rectangle(hdc, left, top, right, bottom);
+	Rectangle(hdc, left, top - 5, right, bottom);
 	SelectObject(hdc, hOldBrush);
 	DeleteObject(hNewBrush);
 }
@@ -129,12 +129,16 @@ void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom)
 void GameOver(HDC hdc, int x, int y)
 {
 	const char* filename = "image/Game_Over_1.bmp";
+	const char* filename2 = "image/restart_button.bmp";
+	const char* filename3 = "image/menu.bmp";
 	int w = 216, h = 216;
-	int x1 = x - w / 2 - 32, y1 = y - h;
+	int x1 = x - w / 2 - 20, y1 = y - h - 60;
 
 	DrawImage(hdc, x1, y1, w, h, filename);
-	ShowScoring(hdc, x1, y1 + 200, iScoring, iFail);
-	DrawImage(hdc, x1, y1 + 300, 216, 57, "image/Restart.bmp");
+	DrawImage(hdc, x1, y1 + 280, 216, 57, filename2);
+	ShowScoring(hdc, x1 + 50, y1 + 180, iScoring, iFail);
+	DrawImage(hdc, x1, y1 + 410, 216, 57, "image/Restart.bmp");
+	DrawImage(hdc, x1 + 80, y1 + 345, 50, 50, filename3);
 }
 
 // œ‘ æµ√∑÷

@@ -222,6 +222,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_MOUSEMOVE:
 	{
+		// 根据游戏状态处理鼠标移动
 		if (currentState == StartScreen)
 		{
 			int x = LOWORD(lParam);
@@ -235,10 +236,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SetCursor(LoadCursor(NULL, IDC_ARROW));
 			}
 		}
+		else if (currentState == GameOverScreen)
+		{
+			int x = LOWORD(lParam);
+			int y = HIWORD(lParam);
+			if (x >= 150 && x <= 330 && y >= 270 && y <= 330)
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+			}
+			else if (x >= 202 && x <= 252 && y >= 345 && y <= 395) {
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+			}
+			else
+			{
+				SetCursor(LoadCursor(NULL, IDC_ARROW));
+			}
+		}
 	}
 	break;
 	case WM_LBUTTONUP:
 	{
+		// 根据游戏状态处理鼠标点击
 		if (currentState == StartScreen)
 		{
 			int x = LOWORD(lParam);
@@ -252,15 +270,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			int x = LOWORD(lParam);
 			int y = HIWORD(lParam);
-			if (x >= 150 && x <= 330 && y >= 450 && y <= 507)
+			if (x >= 150 && x <= 330 && y >= 270 && y <= 330)
 			{
 				StartGame(hWnd);
+			}
+			else if (x >= 202 && x <= 252 && y >= 345 && y <= 395)
+			{
+				currentState = StartScreen;
+				InvalidateRect(hWnd, 0, 0);
 			}
 		}
 	}
 	break;
 	case WM_CHAR:
 	{
+		// 根据游戏状态处理键盘输入
 		if (currentState == InGame) {
 			if (wParam < 'a' || wParam > 'z')
 				break;
@@ -365,9 +389,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	break;
 
 	case WM_CLOSE:
-		SetTimer(hWnd, 3, 500, NULL);
+		SetTimer(hWnd, 3, 500, NULL);	// 设置定时器，延迟关闭窗口
 		//HIDE_WINDOW(hWnd);
-		PlayQuitSound();
+		PlayQuitSound();	// 播放退出音效
 		//DestroyWindow(hWnd);
 		break;
 	case WM_DESTROY:
@@ -399,7 +423,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		else if (LOWORD(wParam) == IDC_GITHUB)
 		{
-			ShellExecute(NULL, TEXT("open"), TEXT("https://github.com/ttiee/cpp-Work3/tree/Win-dev"), NULL, NULL, SW_SHOWNORMAL);
+			ShellExecute(NULL, TEXT("open"), TEXT("https://github.com/ttiee/cpp-Work3/tree/Win-dev"), NULL, NULL, SW_SHOWNORMAL);	// 打开github源码链接
 			return (INT_PTR)TRUE;
 		}
 		break;
