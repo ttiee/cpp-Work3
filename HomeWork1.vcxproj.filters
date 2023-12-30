@@ -56,11 +56,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="mysound.resx">
-      <Filter>资源文件</Filter>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Media Include="sound\wrong.wav">
       <Filter>资源文件</Filter>
     </Media>
@@ -80,6 +75,9 @@
       <Filter>资源文件</Filter>
     </Media>
     <Media Include="sound\start.wav">
+      <Filter>资源文件</Filter>
+    </Media>
+    <Media Include="sound\correct.wav">
       <Filter>资源文件</Filter>
     </Media>
   </ItemGroup>

@@ -117,7 +117,12 @@ void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom)
 void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom)
 {
 	const char* filename = "image/Start.bmp";
-	DrawImage(hdc, left, top, right - left, bottom - top, filename);
+	int w = 216, h = 100;
+	int x1 = 132, y1 = 130;
+	DrawImage(hdc, x1, y1, w, h, filename);
+	char szTemp[32];
+	sprintf(szTemp, "按 S 开始游戏");
+	TextOutA(hdc, x1 + 50, y1 + 300, szTemp, strlen(szTemp));
 }
 
 // 绘制游戏结束界面

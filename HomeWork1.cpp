@@ -35,7 +35,14 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+// 绘制开始界面
+void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom);
+
 void Draw_Ingame_rect(HDC hdc, int left, int top, int right, int bottom);	// 绘制游戏区域
+
+void DrawStartScreen(HDC hdc, int left, int top, int right, int bottom);	// 绘制开始界面
+
+void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);	// 绘制白色背景
 
 void ShowScoring(HDC hdc, int x, int y, int iScoring, int iFail);	// 显示得分
 
@@ -55,8 +62,6 @@ void PlayAboutSound();	// 播放关于音效
 
 void PlayQuitSound();	// 播放退出音效
 
-void DrawWhiteBack(HDC hdc, int left, int top, int right, int bottom);	// 绘制白色背景
-
 void SpawnChar();	// 生成目标字符
 
 // 开始游戏
@@ -68,7 +73,7 @@ void StartGame(HWND hWnd) {
 	InvalidateRect(hWnd, 0, 0);	// 刷新窗口
 	//UpdateWindow(hWnd);
 	PlayStartSound();
-	SetTimer(hWnd, 1, 10, NULL);	// 设置定时器
+	SetTimer(hWnd, 1, 1000 / 80, NULL);	// 设置定时器，帧率为80
 }
 
 
@@ -85,7 +90,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// 初始化全局字符串
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
 	LoadStringW(hInstance, IDC_HOMEWORK1, szWindowClass, MAX_LOADSTRING);
-	//MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OK);
 	//if (MessageBoxW(NULL, TEXT("点击确定开始游戏"), TEXT("打字游戏 v0.5.0"), MB_OKCANCEL) == IDCANCEL)
 	//	return 0;
 	MyRegisterClass(hInstance);
@@ -100,6 +104,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg;
 
+	// TODO: 预加载音效
+
 	// 主消息循环:
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
@@ -110,6 +116,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		}
 	}
 	//MessageBoxW(NULL, TEXT("游戏结束"), TEXT("打字游戏 v0.5.0"), MB_OK);
+
 	return (int)msg.wParam;
 }
 
@@ -213,6 +220,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		break;
+	case WM_MOUSEMOVE:
+	{
+		if (currentState == StartScreen)
+		{
+			int x = LOWORD(lParam);
+			int y = HIWORD(lParam);
+			if (x >= 150 && x <= 330 && y >= 150 && y <= 210)
+			{
+				SetCursor(LoadCursor(NULL, IDC_HAND));
+			}
+			else
+			{
+				SetCursor(LoadCursor(NULL, IDC_ARROW));
+			}
+		}
+	}
+	break;
+	case WM_LBUTTONUP:
+	{
+		if (currentState == StartScreen)
+		{
+			int x = LOWORD(lParam);
+			int y = HIWORD(lParam);
+			if (x >= 150 && x <= 330 && y >= 150 && y <= 210)
+			{
+				StartGame(hWnd);
+			}
+		}
+		else if (currentState == GameOverScreen)
+		{
+			int x = LOWORD(lParam);
+			int y = HIWORD(lParam);
+			if (x >= 150 && x <= 330 && y >= 450 && y <= 507)
+			{
+				StartGame(hWnd);
+			}
+		}
+	}
+	break;
 	case WM_CHAR:
 	{
 		if (currentState == InGame) {
@@ -227,6 +273,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SpawnChar();
 				iScoring++;
 				PlayCorrectSound();
+				//PlayPreloadedSound(hMem1, dataSize1);
 			}
 			else
 			{
@@ -286,7 +333,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// TODO: 在此处添加使用 hBackDC 的任何绘图代码...
 
-		// 绘制白色背景，防止出现黑色背景，同时遮挡旧页面
+		// 绘制白色背景，防止出现黑色背景
 		DrawWhiteBack(hBackDC, 0, 0, WindowWidth, WindowHeight);
 		// 绘制游戏区域，根据游戏状态绘制不同的内容
 		if (currentState == GameOverScreen) {
@@ -295,7 +342,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		else if (currentState == StartScreen)
 		{
-			Draw_Ingame_rect(hBackDC, left, top, right, bottom);
+			DrawStartScreen(hBackDC, 0, 0, WindowWidth, WindowHeight);
 		}
 		else
 		{

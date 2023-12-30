@@ -146,9 +146,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="mysound.resx" />
-  </ItemGroup>
-  <ItemGroup>
+    <Media Include="sound\correct.wav" />
     <Media Include="sound\fart-button.wav" />
     <Media Include="sound\quack.wav" />
     <Media Include="sound\start.wav" />
