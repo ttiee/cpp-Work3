@@ -2,3 +2,7 @@ Release/*
 .vs
 x64/*
 Debug/*
+
+image/*.jpg
+image/*.png
+sound/*.mp3
